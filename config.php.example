@@ -1,5 +1,10 @@
 <?php
 
+//pokemon to watch for with their pokemon numbers
+watchPokemon(131); //lapras
+watchPokemon(143); //snorlax
+watchPokemon(150); // mewtwo
+
 $path = "../PokemonGo-Map/pogom.db";
 
 $twilioSid = "TWILIO ACCOUNT";

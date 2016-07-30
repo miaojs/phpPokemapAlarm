@@ -15,10 +15,6 @@ $p_file = fopen("pokemon.json", "r");
 $pokemon = json_decode(fread($p_file, filesize("pokemon.json")),true);
 fclose($p_file);
 
-watchPokemon(131);
-watchPokemon(143);
-watchPokemon(150);
-
 echo "\nWatching for pokemon\n";
 
 foreach($watch as $pid) {
