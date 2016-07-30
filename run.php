@@ -69,7 +69,7 @@ $pdb->close();
 unset($pdb);
 $db->close();
 unset($db);
-sleep(5);
+sleep(10);
 }
 
 function watchPokemon($pid) {
