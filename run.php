@@ -1,10 +1,11 @@
 <?php
+$watch = array();
 include("./config.php");
 while (1==1) {
 $pdb = new SQLite3($path);
 $pdb->busyTimeout(5000);
 $db = new SQLite3("alarm.db");
-$watch = array();
+
 
 $db->exec("create table if not exists `pokemon` (encounter varchar(255));");
 $db->exec("create table if not exists `watch` (id integer);");
@@ -74,7 +75,6 @@ sleep(5);
 function watchPokemon($pid) {
 	global $watch;
 	$watch[$pid] = $pid;
-	
 }
 /* function watchPokemon($pid) {
 	global $db;
