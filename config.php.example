@@ -1,2 +1,8 @@
 <?php
+
 $path = "../PokemonGo-Map/pogom.db";
+
+$twilioSid = "TWILIO ACCOUNT";
+$twilioAuth = "TWILIO SECRET";
+$twilioFrom = "TWILIO PHONE";
+$notify[1] = "19999999999"; //who to notify, add more recipients in array
