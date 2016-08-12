@@ -36,7 +36,13 @@ if ($lastSeen > time()) {
 
 				echo ". Not notified.";
 			foreach($notify as $sendTo) {
-	exec("curl -sS -k -X POST 'https://api.twilio.com/2010-04-01/Accounts/" . $twilioSid . "/Messages.json' --data-urlencode 'To=+" . $sendTo . "' --data-urlencode 'From=+" . $twilioFrom . "' --data-urlencode 'Body=" . $pokemon[$pid] . " is around. Expires in " . round(($lastSeen - time())/60,2) . " minutes.' -u '" . $twilioSid . ":" . $twilioAuth . "'");
+				unset($ch);
+				$ch = curl_init("https://maps.googleapis.com/maps/api/geocode/json?latlng=" . $res_array['latitude'] . "," . $res_array['longitude'] . "&key=" . $gmaps);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+				$loc = json_decode(curl_exec($ch), true);
+				curl_close($ch);
+	exec("curl -sS -k -X POST 'https://api.twilio.com/2010-04-01/Accounts/" . $twilioSid . "/Messages.json' --data-urlencode 'To=+" . $sendTo . "' --data-urlencode 'From=+" . $twilioFrom . "' --data-urlencode 'Body=" . $pokemon[$pid] . " is around. Expires in " . round(($lastSeen - time())/60,2) . " minutes. \n\n" . $loc["results"][0]['formatted_address'] . "' -u '" . $twilioSid . ":" . $twilioAuth . "'");
 	$db->exec("INSERT INTO `pokemon` (`encounter`) VALUES ('" . $res_array["encounter_id"] . "');");
 	}
 	}
