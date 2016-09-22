@@ -27,6 +27,7 @@ $res = $pdb->query('SELECT * FROM `pokemon` WHERE `pokemon_id` = '. $pid . ' ORD
 if ($res_array = $res->fetchArray(SQLITE3_ASSOC)) {
 	$lastSeen = strtotime($res_array["disappear_time"] . "UTC");
 echo "Last " . $pokemon[$pid] . " expired: " . date("F j, Y, g:i a", strtotime($res_array["disappear_time"] . "UTC")) . ".";
+
 if ($lastSeen > time()) {
 	echo " Not expired";
 	$resExists = $db->query('SELECT * FROM `pokemon` WHERE `encounter` = \'' . $res_array["encounter_id"] . '\';');
@@ -42,9 +43,10 @@ if ($lastSeen > time()) {
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 				$loc = json_decode(curl_exec($ch), true);
 				curl_close($ch);
-	exec("curl -sS -k -X POST 'https://api.twilio.com/2010-04-01/Accounts/" . $twilioSid . "/Messages.json' --data-urlencode 'To=+" . $sendTo . "' --data-urlencode 'From=+" . $twilioFrom . "' --data-urlencode 'Body=" . $pokemon[$pid] . " is around. Expires in " . round(($lastSeen - time())/60,2) . " minutes. \n\n" . $loc["results"][0]['formatted_address'] . "' -u '" . $twilioSid . ":" . $twilioAuth . "'");
+	exec("curl -sS -k -X POST 'https://api.twilio.com/2010-04-01/Accounts/" . $twilioSid . "/Messages.json' --data-urlencode 'To=+" . $sendTo . "' --data-urlencode 'From=+" . $twilioFrom . "' --data-urlencode 'Body=!!TEST IGNORE!!" . $pokemon[$pid] . " is around. Expires in " . round(($lastSeen - time())/60,2) . " minutes. \n\n" . $loc["results"][0]['formatted_address'] . "\nhttps://www.google.com/maps/place/" . $res_array['latitude'] . "," . $res_array['longitude'] . "' -u '" . $twilioSid . ":" . $twilioAuth . "'");
 	$db->exec("INSERT INTO `pokemon` (`encounter`) VALUES ('" . $res_array["encounter_id"] . "');");
 	}
+exit(0);
 	}
 
 } else {
