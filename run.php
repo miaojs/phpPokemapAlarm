@@ -46,7 +46,6 @@ if ($lastSeen > time()) {
 	exec("curl -sS -k -X POST 'https://api.twilio.com/2010-04-01/Accounts/" . $twilioSid . "/Messages.json' --data-urlencode 'To=+" . $sendTo . "' --data-urlencode 'From=+" . $twilioFrom . "' --data-urlencode 'Body=!!TEST IGNORE!!" . $pokemon[$pid] . " is around. Expires in " . round(($lastSeen - time())/60,2) . " minutes. \n\n" . $loc["results"][0]['formatted_address'] . "\nhttps://www.google.com/maps/place/" . $res_array['latitude'] . "," . $res_array['longitude'] . "' -u '" . $twilioSid . ":" . $twilioAuth . "'");
 	$db->exec("INSERT INTO `pokemon` (`encounter`) VALUES ('" . $res_array["encounter_id"] . "');");
 	}
-exit(0);
 	}
 
 } else {
